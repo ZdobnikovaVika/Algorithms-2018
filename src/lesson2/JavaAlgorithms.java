@@ -97,7 +97,29 @@ public class JavaAlgorithms {
      * вернуть ту из них, которая встречается раньше в строке first.
      */
     static public String longestCommonSubstring(String firs, String second) {
-        throw new NotImplementedError();
+        if (firs.length() == 0 || second.length() == 0)
+            return "";
+        if (firs.equals(second))
+            return firs;
+        int[][] matrix = new int[firs.length()][];
+        int maxLength = 0;
+        int maxI = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[i] = new int[second.length()];
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (firs.charAt(i) == second.charAt(j)) {
+                    if (i != 0 && j != 0)
+                        matrix[i][j] = matrix[i - 1][j - 1] + 1;
+                    else
+                        matrix[i][j] = 1;
+                    if (matrix[i][j] > maxLength) {
+                        maxLength = matrix[i][j];
+                        maxI = i;
+                    }
+                }
+            }
+        }
+        return firs.substring(maxI - maxLength + 1, maxI + 1);
     }
 
     /**
@@ -141,6 +163,44 @@ public class JavaAlgorithms {
      * Остальные символы ни в файле, ни в словах не допускаются.
      */
     static public Set<String> baldaSearcher(String inputName, Set<String> words) {
-        throw new NotImplementedError();
+        file = new ArrayList<>();
+        try(Scanner scanner = new Scanner(new FileReader(inputName))){
+            while (scanner.hasNextLine())
+                file.add(scanner.nextLine().trim().split(" "));
+        } catch (FileNotFoundException e) {
+            System.err.println("Reading error");
+            System.err.println(e.toString());
+        }
+        Set<String> result = new TreeSet<>();
+        for (String w:words) {
+            boolean br = false;
+            for (int y = 0; y < file.size(); y++) {
+                for (int x =0; x < file.get(y).length; x++){
+                    word = w;
+                    br = searcher(x,y,0);
+                    if (br) break;
+                }
+                if (br) break;
+            }
+            if (br) result.add(w);
+        }
+        return result;
+    }
+    static private ArrayList<String[]> file;
+    static private String word;
+    static private boolean searcher(int x, int y, int pos){
+        if (pos == word.length())
+            return true;
+        if (file.get(y)[x].charAt(0) != word.charAt(pos))
+            return false;
+        for (int d = -1; d < 2; d+=2) {
+            int dx = x + d;
+            int dy = y + d;
+            if ((dy > -1 && dy < file.size() && searcher(x,dy,pos+1)) ||
+                    (dx > -1 && dx < file.get(y).length && searcher(dx,y,pos+1)))
+                return true;
+        }
+        return false;
+    }
     }
 }

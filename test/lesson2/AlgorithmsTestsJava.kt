@@ -31,6 +31,7 @@ class AlgorithmsTestsJava : AbstractAlgorithmsTests() {
     @Test
     @Tag("Hard")
     fun testBaldaSearcher() {
-        baldaSearcher { inputName, words -> JavaAlgorithms.baldaSearcher(inputName, words) }
+        assertEquals(setOf("АЛЬФА", "ФА"),
+                JavaAlgorithms.baldaSearcher("input/balda_in2.txt", setOf("АЛЬФА", "ФА", "FST")))
     }
 }

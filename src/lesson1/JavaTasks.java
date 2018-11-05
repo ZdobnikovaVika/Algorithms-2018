@@ -142,7 +142,36 @@ public class JavaTasks {
      * 121.3
      */
     static public void sortTemperatures(String inputName, String outputName) {
-        throw new NotImplementedError();
+        StringBuilder str = new StringBuilder();
+        int[] temperature = new int[7731];
+        try(FileReader reader = new FileReader(inputName)){
+            int c = reader.read();
+            if (c == -1) return;
+            do{
+                while (c != '\r' && c != '\n') {
+                    if ((char) c != '.')
+                        str.append((char) c);
+                    c = reader.read();
+                }
+                temperature[Integer.parseInt(str.toString()) + 2730]++;
+                str = new StringBuilder();
+            }while ((c = reader.read())!=-1);
+        } catch (IOException e) {
+            System.err.println("Reader error");
+            System.err.println(e.toString());
+        }
+        try(FileWriter writer = new FileWriter(outputName)){
+            for(int i=0;i<temperature.length;i++) {
+                for (int j = 0; j < temperature[i]; j++) {
+                    writer.write(String.format(Locale.US,"%.1f",(double) (i - 2730) / 10));
+                    writer.write("\n");
+                }
+                writer.flush();
+            }
+        } catch (IOException e) {
+            System.err.println("Writer error");
+            System.err.println(e.toString());
+        }
     }
 
     /**
