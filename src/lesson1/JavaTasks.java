@@ -61,9 +61,54 @@ public class JavaTasks {
      * Садовая 5 - Сидоров Петр, Сидорова Мария
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
+     *
+     * Сложность - O(n log(n)), ресурсоемкость - R(n)
      */
     static public void sortAddresses(String inputName, String outputName) {
-        throw new NotImplementedError();
+        File fl = new File(inputName);
+        SortedMap<String, SortedMap<Integer, SortedMap<String, ArrayList<String>>>> adres = new TreeMap<>();
+        Scanner sc = new Scanner(fl);
+        while (sc.hasNextLine()){
+            String[] buf = sc.nextLine().split(" ");
+            Integer dom = Integer.valueOf(buf[4]);
+            if (adres.containsKey(buf[3])){
+                if (adres.get(buf[3]).containsKey(dom)){
+                    if (adres.get(buf[3]).get(dom).containsKey(buf[0]))
+                        adres.get(buf[3]).get(dom).get(buf[0]).add(buf[1]);
+                    else {
+                        adres.get(buf[3]).get(dom).put(buf[0], new ArrayList<>());
+                        adres.get(buf[3]).get(dom).get(buf[0]).add(buf[1]);
+                    }
+                }else {
+                    adres.get(buf[3]).put(dom, new TreeMap<>());
+                    adres.get(buf[3]).get(dom).put(buf[0], new ArrayList<>());
+                    adres.get(buf[3]).get(dom).get(buf[0]).add(buf[1]);
+                }
+            }else {
+                adres.put(buf[3], new TreeMap<>());
+                adres.get(buf[3]).put(dom, new TreeMap<>());
+                adres.get(buf[3]).get(dom).put(buf[0], new ArrayList<>());
+                adres.get(buf[3]).get(dom).get(buf[0]).add(buf[1]);
+            }
+        }
+        BufferedWriter out = new BufferedWriter(new FileWriter(outputName));
+        for (Map.Entry<String, SortedMap<Integer, SortedMap<String, ArrayList<String>>>> street: adres.entrySet()) {
+            StringBuilder string = new StringBuilder().append(street.getKey()).append(" ");
+            for (Map.Entry<Integer, SortedMap<String, ArrayList<String>>> num: street.getValue().entrySet()) {
+                string.append(num.getKey()).append(" - ");
+                for (Map.Entry<String, ArrayList<String>> fname: num.getValue().entrySet()) {
+                    ArrayList<String> names = fname.getValue();
+                    Collections.sort(names);
+                    for (String name:names)
+                        string.append(fname.getKey()).append(" ").append(name).append(", ");
+                }
+                int l = string.toString().length();
+                out.write(string.toString().substring(0,l-2));
+                out.write("\n");
+                out.flush();
+                string = new StringBuilder().append(street.getKey()).append(" ");
+            }
+        }
     }
 
     /**
