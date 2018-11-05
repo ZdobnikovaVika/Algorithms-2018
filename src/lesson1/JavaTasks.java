@@ -140,6 +140,8 @@ public class JavaTasks {
      * 24.7
      * 99.5
      * 121.3
+     *
+     * сложность - O(n+m), ресурчоемкость - R(m) (m=7731)
      */
     static public void sortTemperatures(String inputName, String outputName) {
         StringBuilder str = new StringBuilder();

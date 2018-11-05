@@ -95,6 +95,8 @@ public class JavaAlgorithms {
      * При сравнении подстрок, регистр символов *имеет* значение.
      * Если имеется несколько самых длинных общих подстрок одной длины,
      * вернуть ту из них, которая встречается раньше в строке first.
+     *
+     * сложность O(mn), ресурсоемкость R(mn)
      */
     static public String longestCommonSubstring(String firs, String second) {
         if (firs.length() == 0 || second.length() == 0)
@@ -161,6 +163,8 @@ public class JavaAlgorithms {
      * Все слова и буквы -- русские или английские, прописные.
      * В файле буквы разделены пробелами, строки -- переносами строк.
      * Остальные символы ни в файле, ни в словах не допускаются.
+     *
+     *Сложность O(n^2), ресурсы R(mn)
      */
     static public Set<String> baldaSearcher(String inputName, Set<String> words) {
         file = new ArrayList<>();
