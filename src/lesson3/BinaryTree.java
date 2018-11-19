@@ -63,6 +63,9 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     /**
      * Удаление элемента в дереве
      * Средняя
+     *
+     * сложность O(log m), m- узлы
+     *  ресурсоемкость R (n)
      */
 
 
@@ -198,6 +201,8 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
         /**
          * Поиск следующего элемента
          * Средняя
+         *  сложностьO(N)
+         *  ресурсоемкость R(logN)
          */
 
         private Node<T> findNext() {
