@@ -65,7 +65,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
      * Средняя
      */
 
-    
+
     @Override
     public boolean remove(Object o) {
 
@@ -124,7 +124,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
                 subroot.left = removeNode.right;
 
         } else {
-            Node changeSubroot = changeNode(removeNode);
+            Node change = changeNode(removeNode);
 
             if (removeNode == root) {
                 root = change;
@@ -149,7 +149,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
         }
 
         if (change != changeNod.right) {
-            changeSubroot.left = replacement.right;
+            changeSubroot.left = change.right;
             change.right = changeNod.right;
         }
 
