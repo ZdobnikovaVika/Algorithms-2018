@@ -1,9 +1,11 @@
 package lesson5;
 
 import kotlin.NotImplementedError;
+import lesson5.impl.GraphBuilder;
 
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+
 
 @SuppressWarnings("unused")
 public class JavaGraphTasks {
@@ -64,9 +66,29 @@ public class JavaGraphTasks {
      * E    F    I
      * |
      * J ------------ K
+     *
+     * O(v * e)
      */
     public static Graph minimumSpanningTree(Graph graph) {
-        throw new NotImplementedError();
+        GraphBuilder graphBuilder = new GraphBuilder();
+        int verticesNum = graph.getVertices().size();
+        Graph.Vertex first = graph.getVertices().iterator().next();
+        Deque<Graph.Vertex> deque = new ArrayDeque<>();
+        Set<Graph.Vertex> used = new HashSet<>();
+        deque.add(first);
+        used.add(first);
+        while (!deque.isEmpty()) {
+            Graph.Vertex cur = deque.removeLast();
+            graph.getNeighbors(cur).forEach(n -> {
+                if (!used.contains(n)) {
+                    used.add(n);
+                    deque.add(n);
+                    graphBuilder.addVertex(cur.getName());
+                    graphBuilder.addConnection(cur, n, 1);
+                }
+            });
+        }
+        return graphBuilder.build();
     }
 
     /**
@@ -116,8 +138,29 @@ public class JavaGraphTasks {
      * J ------------ K
      *
      * Ответ: A, E, J, K, D, C, H, G, B, F, I
+     * сложость 2^N
      */
     public static Path longestSimplePath(Graph graph) {
-        throw new NotImplementedError();
+        Deque<Path> stack = new ArrayDeque<>();
+        graph.getVertices().forEach(v -> stack.push(new Path(v)));
+        Path best = new Path(graph.getVertices().iterator().next());
+        while (!stack.isEmpty()) {
+            Path p = stack.removeFirst();
+            if (p.getLength() > best.getLength()) {
+                best = p;
+                if (p.getVertices().size() == graph.getVertices().size()) {
+                    break;
+                }
+            }
+            graph.getNeighbors(p.getVertices().get(p.getVertices().size() - 1))
+                    .forEach(v -> {
+                        if (!p.contains(v)) {
+                            stack.push(new Path(p, graph, v));
+                        }
+                    });
+        }
+        return best;
+
     }
+
 }

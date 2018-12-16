@@ -2,6 +2,8 @@ package lesson6
 
 import kotlin.test.assertEquals
 
+
+
 abstract class AbstractDynamicTests {
     fun longestCommonSubSequence(longestCommonSubSequence: (String, String) -> String) {
         assertEquals("", longestCommonSubSequence("мой мир", "я"))
@@ -47,6 +49,7 @@ abstract class AbstractDynamicTests {
     }
 
     fun shortestPathOnField(shortestPathOnField: (String) -> Int) {
+
         assertEquals(1, shortestPathOnField("input/field_in2.txt"))
         assertEquals(12, shortestPathOnField("input/field_in1.txt"))
         assertEquals(43, shortestPathOnField("input/field_in3.txt"))

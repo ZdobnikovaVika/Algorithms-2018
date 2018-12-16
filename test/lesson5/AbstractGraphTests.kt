@@ -1,5 +1,7 @@
 package lesson5
 
+import org.junit.Test
+
 import lesson5.impl.GraphBuilder
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -68,6 +70,30 @@ abstract class AbstractGraphTests {
     }
 
     fun minimumSpanningTree(minimumSpanningTree: Graph.() -> Graph) {
+
+        val smallGraph = GraphBuilder().apply { addVertex("A") }.build()
+        val smallTree = smallGraph.minimumSpanningTree()
+        assertEquals(0, smallTree.edges.size)
+
+        val emptyGraph = GraphBuilder().build()
+        val emptyTree = emptyGraph.minimumSpanningTree()
+        assertEquals(0, emptyTree.edges.size)
+
+        val vertexAmount = 200
+        val bigCompleteGraph = GraphBuilder().apply {
+            val vertices = Array<Graph.Vertex?>(vertexAmount) { null }
+            for (i in 0 until vertexAmount) {
+                vertices[i] = addVertex(i.toString())
+                for (j in 0 until i) {
+                    addConnection(vertices[i]!!, vertices[j]!!)
+                }
+            }
+        }.build()
+        val bigTree = bigCompleteGraph.minimumSpanningTree()
+        assertEquals(vertexAmount - 1, bigTree.edges.size)
+        assertEquals(vertexAmount - 1, bigTree.findBridges().size)
+
+
         val graph = GraphBuilder().apply {
             val a = addVertex("A")
             val b = addVertex("B")
@@ -138,6 +164,28 @@ abstract class AbstractGraphTests {
     }
 
     fun longestSimplePath(longestSimplePath: Graph.() -> Path) {
+
+        val smallGraph = GraphBuilder().apply {
+            addVertex("A")
+        }.build()
+        val smallPath = smallGraph.longestSimplePath()
+        assertEquals(0, smallPath.length)
+
+        val vertexAmount = 200
+        val bigCompleteGraph = GraphBuilder().apply {
+            val vertices = Array<Graph.Vertex?>(vertexAmount) { null }
+            for (i in 0 until vertexAmount) {
+                vertices[i] = addVertex(i.toString())
+                for (j in 0 until i) {
+                    addConnection(vertices[i]!!, vertices[j]!!)
+                }
+            }
+        }.build()
+
+        val bigPath = bigCompleteGraph.longestSimplePath()
+        assertEquals(vertexAmount - 1, bigPath.length)
+
+
         val graph = GraphBuilder().apply {
             val a = addVertex("A")
             val b = addVertex("B")
